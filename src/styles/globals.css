@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --c-bg: 240 244 252;
+  --c-surface: 255 255 255;
+  --c-surface-2: 233 238 250;
+  --c-border: 210 218 235;
+  --c-text: 30 36 60;
+  --c-muted: 110 120 145;
+  --c-brand: 109 125 245;
+  --c-accent: 187 124 255;
+  --c-shadow: 60 80 140;
+
+  --c-chart1: 109 125 245;
+  --c-chart2: 38 200 184;
+  --c-chart3: 250 168 60;
+  --c-chart4: 232 90 145;
+  --c-chart5: 96 180 250;
+
+  --c-positive: 38 200 134;
+  --c-neutral: 140 150 175;
+  --c-negative: 232 90 110;
+}
+
+.dark {
+  --c-bg: 18 22 38;
+  --c-surface: 28 33 52;
+  --c-surface-2: 38 44 66;
+  --c-border: 50 58 86;
+  --c-text: 230 235 250;
+  --c-muted: 145 155 180;
+  --c-brand: 132 144 250;
+  --c-accent: 187 124 255;
+  --c-shadow: 0 0 0;
+
+  --c-chart1: 167 139 250;
+  --c-chart2: 56 220 200;
+  --c-chart3: 255 184 80;
+  --c-chart4: 244 114 182;
+  --c-chart5: 96 180 250;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg text-text font-sans antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+* {
+  border-color: rgb(var(--c-border));
+}
+
+.scroll-y {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--c-border)) transparent;
+}
+
+.scroll-y::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-y::-webkit-scrollbar-thumb {
+  background: rgb(var(--c-border));
+  border-radius: 4px;
+}
+
+.gauge-glow {
+  background: radial-gradient(
+    closest-side,
+    rgb(var(--c-brand) / 0.18),
+    transparent 75%
+  );
+}
