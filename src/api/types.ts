@@ -106,6 +106,9 @@ export interface DailyMentionPoint {
   likes_sum: number;
   comments_sum: number;
   reposts_sum: number;
+  positive: number;
+  neutral: number;
+  negative: number;
 }
 
 export interface SentimentPoint {

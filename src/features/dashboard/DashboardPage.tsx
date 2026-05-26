@@ -11,6 +11,7 @@ import { EmotionsDonut } from "@/components/charts/EmotionsDonut";
 import { MentionsLineChart } from "@/components/charts/MentionsLineChart";
 import { EngagementBarChart } from "@/components/charts/EngagementBarChart";
 import { InsightCard } from "./InsightCard";
+import { MentionsList } from "./MentionsList";
 import { listSources, listTopics, type Source, type Topic } from "@/api";
 import { useAnalysisRun } from "@/hooks/useAnalysisRun";
 import { addDays, format } from "date-fns";
@@ -194,10 +195,17 @@ export function DashboardPage() {
               metrics={metrics}
             />
           </Card>
-          <Card title="Вовлечённость">
+          <Card title="Тональность по дням">
             <EngagementBarChart data={charts?.mentions_by_day ?? []} />
           </Card>
         </div>
+
+      {/* Mentions list */}
+      {analysis.run?.mentions?.length ? (
+        <Card title={`Упоминания · ${analysis.run.mentions.length}`}>
+          <MentionsList mentions={analysis.run.mentions} />
+        </Card>
+      ) : null}
 
       </div>
 

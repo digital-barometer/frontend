@@ -11,16 +11,25 @@ import type { DailyMentionPoint } from "@/api";
 import { formatDateShort } from "@/utils/format";
 
 const SERIES = [
-  { key: "comments_sum", label: "комментарии", color: "#2eb872" },
-  { key: "reposts_sum",  label: "репосты",     color: "#7d57c8" },
-  { key: "likes_sum",    label: "лайки",        color: "#e89e3a" },
+  { key: "positive",  label: "позитивные",  color: "#2eb872" },
+  { key: "neutral",   label: "нейтральные", color: "#e89e3a" },
+  { key: "negative",  label: "негативные",  color: "#7d57c8" },
 ] as const;
 
 export function EngagementBarChart({ data }: { data: DailyMentionPoint[] }) {
   if (!data?.length) {
     return (
       <div className="h-56 flex items-center justify-center text-sm text-muted">
-        Нет данных о вовлеченности
+        Нет данных о тональности
+      </div>
+    );
+  }
+
+  const hasData = data.some((d) => d.positive > 0 || d.neutral > 0 || d.negative > 0);
+  if (!hasData) {
+    return (
+      <div className="h-56 flex items-center justify-center text-sm text-muted">
+        Нет данных о тональности по дням
       </div>
     );
   }
@@ -35,7 +44,7 @@ export function EngagementBarChart({ data }: { data: DailyMentionPoint[] }) {
       <div className="h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={rows} margin={{ top: 5, right: 10, bottom: 5, left: -10 }}>
-            <CartesianGrid stroke="rgba(var(--c-border) / 0.3)" strokeDasharray="3 3" />
+            <CartesianGrid stroke="rgb(var(--c-border) / 0.3)" strokeDasharray="3 3" />
             <XAxis
               dataKey="dateLabel"
               tick={{ fill: "rgb(var(--c-muted))", fontSize: 11 }}

@@ -87,7 +87,7 @@ export function DateRangePicker({ from, to, onChange }: DateRangePickerProps) {
             className={clsx(
               "flex-1 bg-chip text-text rounded-full px-4 py-[7px] text-[13px] border transition",
               activePreset === p.days
-                ? "border-text dark:border-white light:border-brand dark:bg-chip bg-[#b9c3ff]"
+                ? "border-brand dark:border-white dark:bg-chip bg-[#b9c3ff]"
                 : "border-transparent",
             )}
           >
