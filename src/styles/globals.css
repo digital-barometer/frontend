@@ -2,44 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Светлая тема */
 :root {
-  --c-bg: 240 244 252;
-  --c-surface: 255 255 255;
-  --c-surface-2: 233 238 250;
-  --c-border: 210 218 235;
-  --c-text: 30 36 60;
-  --c-muted: 110 120 145;
-  --c-brand: 109 125 245;
-  --c-accent: 187 124 255;
-  --c-shadow: 60 80 140;
+  --c-bg:       227 231 255;   /* #e3e7ff */
+  --c-surface:  209 216 255;   /* #d1d8ff */
+  --c-surface-2:197 205 255;   /* #c5cdff */
+  --c-border:   180 190 240;
+  --c-text:     23 20 55;      /* #171437 */
+  --c-muted:    85 85 117;     /* #555575 */
+  --c-brand:    79 99 214;     /* #4f63d6 */
+  --c-accent:   125 87 200;    /* #7d57c8 */
+  --c-shadow:   23 20 55;
 
-  --c-chart1: 109 125 245;
-  --c-chart2: 38 200 184;
-  --c-chart3: 250 168 60;
-  --c-chart4: 232 90 145;
-  --c-chart5: 96 180 250;
+  --c-positive: 46 184 114;    /* #2eb872 */
+  --c-neutral:  232 158 58;    /* #e89e3a */
+  --c-negative: 125 87 200;    /* #7d57c8 */
 
-  --c-positive: 38 200 134;
-  --c-neutral: 140 150 175;
-  --c-negative: 232 90 110;
+  --c-chart1:   46 184 114;    /* green  — comments */
+  --c-chart2:   125 87 200;    /* purple — reposts  */
+  --c-chart3:   232 158 58;    /* orange — likes    */
+  --c-chart4:   46 184 114;
+  --c-chart5:   59 127 230;
 }
 
+/* Тёмная тема */
 .dark {
-  --c-bg: 18 22 38;
-  --c-surface: 28 33 52;
-  --c-surface-2: 38 44 66;
-  --c-border: 50 58 86;
-  --c-text: 230 235 250;
-  --c-muted: 145 155 180;
-  --c-brand: 132 144 250;
-  --c-accent: 187 124 255;
-  --c-shadow: 0 0 0;
+  --c-bg:       21 22 31;      /* #15161f */
+  --c-surface:  35 37 47;      /* #23252f */
+  --c-surface-2:42 44 56;      /* #2a2c38 */
+  --c-border:   60 63 80;
+  --c-text:     255 255 255;
+  --c-muted:    166 168 179;   /* #a6a8b3 */
+  --c-brand:    79 99 214;
+  --c-accent:   125 87 200;
+  --c-shadow:   0 0 0;
 
-  --c-chart1: 167 139 250;
-  --c-chart2: 56 220 200;
-  --c-chart3: 255 184 80;
-  --c-chart4: 244 114 182;
-  --c-chart5: 96 180 250;
+  --c-positive: 46 184 114;
+  --c-neutral:  232 158 58;
+  --c-negative: 125 87 200;
+
+  --c-chart1:   46 184 114;
+  --c-chart2:   125 87 200;
+  --c-chart3:   232 158 58;
+  --c-chart4:   46 184 114;
+  --c-chart5:   59 127 230;
 }
 
 html,

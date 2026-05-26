@@ -66,7 +66,6 @@ export function DashboardPage() {
 
   const metrics = analysis.run?.metrics ?? null;
   const charts = analysis.charts;
-  const mentions = analysis.run?.mentions ?? [];
 
   const gaugeValue = useMemo(() => {
     if (metrics?.barometer_value == null) return null;
@@ -169,12 +168,12 @@ export function DashboardPage() {
 
         <section className="col-span-12">
           <Card title="Вовлеченность">
-            <EngagementBarChart mentions={mentions} />
+            <EngagementBarChart data={charts?.mentions_by_day ?? []} />
           </Card>
         </section>
       </main>
 
-      {analysis.loading && <Loader label="загрузка" />}
+      {analysis.loading && <Loader />}
     </div>
   );
 }
