@@ -29,7 +29,7 @@ export function SourcesMultiSelect({ sources, selected, onChange }: SourcesMulti
 
   const label =
     selected.length === 0
-      ? "Выберите платформы для анализа"
+      ? "Выберете платформы для анализа:"
       : selected.length === sources.length
         ? "Все платформы"
         : `Выбрано: ${selected.length}`;
@@ -39,23 +39,31 @@ export function SourcesMultiSelect({ sources, selected, onChange }: SourcesMulti
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={clsx(
-          "w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl border border-border/70 bg-surface-2 text-sm text-text/90 hover:border-brand/50 transition",
-          open && "border-brand",
-        )}
+        aria-expanded={open}
+        className="w-full flex items-center gap-[10px] bg-field text-text rounded-[12px] px-[14px] py-3 text-sm border border-transparent cursor-pointer"
       >
-        <span className="inline-flex items-center gap-2">
-          <span aria-hidden>🖥️</span>
-          <span className="truncate">{label}</span>
+        <span className="text-muted inline-flex flex-shrink-0">
+          <svg width="22" height="20" viewBox="0 0 24 22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <rect x="1" y="3" width="14" height="10" rx="1" />
+            <line x1="5" y1="17" x2="13" y2="17" />
+            <line x1="9" y1="13" x2="9" y2="17" />
+            <rect x="16.5" y="6" width="6" height="13" rx="1.3" />
+            <line x1="18" y1="16.5" x2="21" y2="16.5" />
+          </svg>
         </span>
-        <span aria-hidden className={clsx("transition", open && "rotate-180")}>
-          ▾
-        </span>
+        <span className="flex-1 text-left truncate">{label}</span>
+        <svg
+          className={clsx("flex-shrink-0 transition-transform", open && "rotate-180")}
+          width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
       </button>
 
       {open && (
-        <div className="absolute z-20 left-0 right-0 top-full mt-2 rounded-xl border border-border bg-surface shadow-card p-3 max-h-72 overflow-auto scroll-y">
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-border">
+        <div className="absolute z-20 left-0 right-0 top-full mt-2 rounded-[12px] bg-field shadow-card p-[14px_18px] max-h-72 overflow-auto scroll-y">
+          <div className="flex items-center justify-between pb-2 mb-3 border-b border-border/20">
             <button
               type="button"
               className="text-xs text-brand hover:underline"
@@ -71,7 +79,7 @@ export function SourcesMultiSelect({ sources, selected, onChange }: SourcesMulti
               Очистить
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-[10px]">
             {sources.map((s) => (
               <Checkbox
                 key={s.id}

@@ -10,13 +10,13 @@ export function Card({ title, children, className, ...rest }: CardProps) {
   return (
     <div
       className={clsx(
-        "rounded-2xl bg-surface border border-border/80 shadow-card p-5 flex flex-col gap-3",
+        "rounded-2xl bg-surface shadow-card p-[22px] flex flex-col gap-[14px]",
         className,
       )}
       {...rest}
     >
       {title && (
-        <h3 className="text-sm font-semibold tracking-tight text-text/90">{title}</h3>
+        <h3 className="text-base font-medium text-text m-0 leading-snug">{title}</h3>
       )}
       {children}
     </div>

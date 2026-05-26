@@ -6,9 +6,9 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
     <input
       ref={ref}
       className={clsx(
-        "w-full bg-surface-2 border border-border/70 rounded-xl px-3 py-2 text-sm",
-        "placeholder:text-muted/80 text-text",
-        "focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition",
+        "w-full bg-field text-text rounded-[12px] px-[14px] py-3 text-sm",
+        "placeholder:text-muted border border-transparent",
+        "focus:outline-none focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition",
         className,
       )}
       {...rest}

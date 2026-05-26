@@ -4,48 +4,52 @@
 
 /* Светлая тема */
 :root {
-  --c-bg:       227 231 255;   /* #e3e7ff */
-  --c-surface:  209 216 255;   /* #d1d8ff */
-  --c-surface-2:197 205 255;   /* #c5cdff */
-  --c-border:   180 190 240;
-  --c-text:     23 20 55;      /* #171437 */
-  --c-muted:    85 85 117;     /* #555575 */
-  --c-brand:    79 99 214;     /* #4f63d6 */
-  --c-accent:   125 87 200;    /* #7d57c8 */
-  --c-shadow:   23 20 55;
+  --c-bg:        227 231 255;   /* #e3e7ff */
+  --c-surface:   209 216 255;   /* #d1d8ff */
+  --c-surface-2: 197 205 255;   /* #c5cdff */
+  --c-field-bg:  255 255 255;   /* #ffffff */
+  --c-chip-bg:   255 255 255;   /* #ffffff */
+  --c-border:    180 190 240;
+  --c-text:      23 20 55;      /* #171437 */
+  --c-muted:     85 85 117;     /* #555575 */
+  --c-brand:     79 99 214;     /* #4f63d6 */
+  --c-accent:    125 87 200;    /* #7d57c8 */
+  --c-shadow:    23 20 55;
 
-  --c-positive: 46 184 114;    /* #2eb872 */
-  --c-neutral:  232 158 58;    /* #e89e3a */
-  --c-negative: 125 87 200;    /* #7d57c8 */
+  --c-positive:  46 184 114;    /* #2eb872 */
+  --c-neutral:   232 158 58;    /* #e89e3a */
+  --c-negative:  125 87 200;    /* #7d57c8 */
 
-  --c-chart1:   46 184 114;    /* green  — comments */
-  --c-chart2:   125 87 200;    /* purple — reposts  */
-  --c-chart3:   232 158 58;    /* orange — likes    */
-  --c-chart4:   46 184 114;
-  --c-chart5:   59 127 230;
+  --c-chart1:    46 184 114;    /* green  */
+  --c-chart2:    125 87 200;    /* purple */
+  --c-chart3:    232 158 58;    /* orange */
+  --c-chart4:    46 184 114;
+  --c-chart5:    59 127 230;
 }
 
 /* Тёмная тема */
 .dark {
-  --c-bg:       21 22 31;      /* #15161f */
-  --c-surface:  35 37 47;      /* #23252f */
-  --c-surface-2:42 44 56;      /* #2a2c38 */
-  --c-border:   60 63 80;
-  --c-text:     255 255 255;
-  --c-muted:    166 168 179;   /* #a6a8b3 */
-  --c-brand:    79 99 214;
-  --c-accent:   125 87 200;
-  --c-shadow:   0 0 0;
+  --c-bg:        21 22 31;      /* #15161f */
+  --c-surface:   35 37 47;      /* #23252f */
+  --c-surface-2: 42 44 56;      /* #2a2c38 */
+  --c-field-bg:  21 22 31;      /* #15161f — same as page */
+  --c-chip-bg:   53 56 70;      /* #353846 */
+  --c-border:    60 63 80;
+  --c-text:      255 255 255;
+  --c-muted:     166 168 179;   /* #a6a8b3 */
+  --c-brand:     79 99 214;
+  --c-accent:    125 87 200;
+  --c-shadow:    0 0 0;
 
-  --c-positive: 46 184 114;
-  --c-neutral:  232 158 58;
-  --c-negative: 125 87 200;
+  --c-positive:  46 184 114;
+  --c-neutral:   232 158 58;
+  --c-negative:  125 87 200;
 
-  --c-chart1:   46 184 114;
-  --c-chart2:   125 87 200;
-  --c-chart3:   232 158 58;
-  --c-chart4:   46 184 114;
-  --c-chart5:   59 127 230;
+  --c-chart1:    46 184 114;
+  --c-chart2:    125 87 200;
+  --c-chart3:    232 158 58;
+  --c-chart4:    46 184 114;
+  --c-chart5:    59 127 230;
 }
 
 html,

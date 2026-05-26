@@ -9,6 +9,8 @@ const config: Config = {
         bg: "rgb(var(--c-bg) / <alpha-value>)",
         surface: "rgb(var(--c-surface) / <alpha-value>)",
         "surface-2": "rgb(var(--c-surface-2) / <alpha-value>)",
+        field: "rgb(var(--c-field-bg) / <alpha-value>)",
+        chip: "rgb(var(--c-chip-bg) / <alpha-value>)",
         border: "rgb(var(--c-border) / <alpha-value>)",
         text: "rgb(var(--c-text) / <alpha-value>)",
         muted: "rgb(var(--c-muted) / <alpha-value>)",
@@ -31,7 +33,7 @@ const config: Config = {
         "2xl": "20px",
       },
       boxShadow: {
-        card: "0 2px 18px -8px rgb(var(--c-shadow) / 0.45)",
+        card: "0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.18)",
       },
       keyframes: {
         glow: {

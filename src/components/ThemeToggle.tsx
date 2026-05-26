@@ -7,10 +7,22 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label="Переключить тему"
-      className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-border/60 bg-surface hover:bg-surface-2 text-sm text-text/80 transition"
+      className="inline-flex items-center gap-2 bg-field text-text rounded-full px-[14px] py-2 text-[13px] border-0 transition hover:brightness-95"
     >
-      <span aria-hidden>{theme === "dark" ? "☀" : "☾"}</span>
-      <span>{theme === "dark" ? "Светлая" : "Тёмная"}</span>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+      <span>{theme === "dark" ? "Светлая тема" : "Тёмная тема"}</span>
     </button>
   );
 }

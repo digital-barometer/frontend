@@ -11,7 +11,6 @@ import { EmotionsDonut } from "@/components/charts/EmotionsDonut";
 import { MentionsLineChart } from "@/components/charts/MentionsLineChart";
 import { EngagementBarChart } from "@/components/charts/EngagementBarChart";
 import { InsightCard } from "./InsightCard";
-import { MentionsStats } from "./MentionsStats";
 import { listSources, listTopics, type Source, type Topic } from "@/api";
 import { useAnalysisRun } from "@/hooks/useAnalysisRun";
 import { addDays, format } from "date-fns";
@@ -78,72 +77,96 @@ export function DashboardPage() {
   }, [metrics]);
 
   return (
-    <div className="min-h-screen w-full bg-bg text-text">
-      <header className="px-6 lg:px-10 py-5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand to-accent shadow-card flex items-center justify-center text-white text-lg">
-            ◐
-          </div>
-          <div>
-            <h1 className="text-lg font-bold">Цифровой барометр</h1>
-            <p className="text-xs text-muted -mt-0.5">Сервис аналитики отношения</p>
-          </div>
-        </div>
-        <ThemeToggle />
-      </header>
+    <div className="min-h-screen bg-bg text-text">
+      <div className="max-w-[1440px] mx-auto px-6 py-6 flex flex-col gap-5">
 
-      {bootError && (
-        <div className="mx-6 lg:mx-10 mb-4 px-4 py-3 rounded-xl bg-negative/15 text-negative text-sm">
-          {bootError}
-        </div>
-      )}
-
-      <main className="px-6 lg:px-10 pb-10 grid grid-cols-12 gap-4">
-        <section className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-          <Card title="Выбор темы">
-            <TopicPicker
-              topics={topics}
-              selectedId={topicId}
-              keywords={keywords}
-              onSelectTopic={(t) => {
-                setTopicId(t?.id ?? null);
-                if (t) setKeywords(t.keywords);
-              }}
-              onKeywordsChange={setKeywords}
-              onCreated={(t) => setTopics((prev) => [t, ...prev])}
-            />
-          </Card>
-
-          <Card title="Выбор временного интервала">
-            <DateRangePicker
-              from={from}
-              to={to}
-              onChange={(f, t) => setRange({ from: f, to: t })}
-            />
-          </Card>
-
-          <Card title="Выбор платформ">
-            <SourcesMultiSelect
-              sources={sources}
-              selected={selectedSources}
-              onChange={setSelectedSources}
-            />
-            <Button
-              type="button"
-              disabled={!canRun || analysis.loading}
-              onClick={submit}
-              className="mt-2 w-full"
+        {/* Header — styled as a card */}
+        <header className="rounded-2xl bg-surface shadow-card px-7 py-[22px] flex items-center justify-between">
+          <div className="flex items-center gap-[18px]">
+            <svg
+              className="w-14 h-14 flex-shrink-0 text-text"
+              viewBox="0 0 56 56"
+              fill="none"
+              aria-hidden="true"
             >
-              Анализ
-            </Button>
-            {analysis.error && (
-              <p className="text-xs text-negative mt-1">{analysis.error}</p>
-            )}
-          </Card>
-        </section>
+              <circle cx="28" cy="28" r="26" stroke="currentColor" strokeWidth="2.5" fill="none" />
+              <path
+                d="M14 32 A14 14 0 0 1 42 32"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                fill="none"
+                strokeLinecap="round"
+              />
+              <line x1="28" y1="32" x2="38" y2="20" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+              <circle cx="28" cy="32" r="2.5" fill="currentColor" />
+            </svg>
+            <div>
+              <div className="text-[26px] font-bold tracking-[0.2px]">Цифровой барометр</div>
+              <div className="text-[13px] text-muted mt-0.5">Сервис аналитики отношений</div>
+            </div>
+          </div>
+          <ThemeToggle />
+        </header>
 
-        <section className="col-span-12 lg:col-span-6 flex flex-col gap-4">
-          <Card title="Цифровой барометр отношений" className="min-h-[360px]">
+        {bootError && (
+          <div className="px-4 py-3 rounded-2xl bg-negative/15 text-negative text-sm">
+            {bootError}
+          </div>
+        )}
+
+        {/* 3-column grid */}
+        <div className="grid grid-cols-[minmax(300px,1.05fr)_minmax(380px,1.4fr)_minmax(300px,1.05fr)] gap-5">
+
+          {/* Left column */}
+          <div className="flex flex-col gap-5">
+            <Card title="Выбор темы">
+              <TopicPicker
+                topics={topics}
+                selectedId={topicId}
+                keywords={keywords}
+                onSelectTopic={(t) => {
+                  setTopicId(t?.id ?? null);
+                  if (t) setKeywords(t.keywords);
+                }}
+                onKeywordsChange={setKeywords}
+                onCreated={(t) => setTopics((prev) => [t, ...prev])}
+              />
+            </Card>
+
+            <Card title="Выбор временного интервала">
+              <DateRangePicker
+                from={from}
+                to={to}
+                onChange={(f, t) => setRange({ from: f, to: t })}
+              />
+            </Card>
+
+            <Card title="Выбор платформ">
+              <SourcesMultiSelect
+                sources={sources}
+                selected={selectedSources}
+                onChange={setSelectedSources}
+              />
+              <div className="flex justify-end mt-2">
+                <Button
+                  type="button"
+                  disabled={!canRun || analysis.loading}
+                  onClick={submit}
+                >
+                  Анализ
+                </Button>
+              </div>
+              {analysis.error && (
+                <p className="text-xs text-negative">{analysis.error}</p>
+              )}
+            </Card>
+          </div>
+
+          {/* Center column — barometer fills full height */}
+          <Card
+            title="Цифровой барометр отношений"
+            className="flex flex-col"
+          >
             <BarometerGauge
               value={gaugeValue}
               label={metrics?.barometer_label ?? "Запустите анализ"}
@@ -151,27 +174,32 @@ export function DashboardPage() {
             />
           </Card>
 
+          {/* Right column */}
+          <div className="flex flex-col gap-5">
+            <Card title="Распределение эмоций">
+              <EmotionsDonut data={charts?.emotions ?? []} />
+            </Card>
+            <Card title="Инсайты">
+              <InsightCard metrics={metrics} />
+            </Card>
+          </div>
+
+        </div>
+
+        {/* Bottom row: Mentions + Engagement side by side */}
+        <div className="grid grid-cols-2 gap-5">
           <Card title="Упоминания">
-            {metrics && <MentionsStats metrics={metrics} />}
-            <MentionsLineChart data={charts?.mentions_by_day ?? []} />
+            <MentionsLineChart
+              data={charts?.mentions_by_day ?? []}
+              metrics={metrics}
+            />
           </Card>
-        </section>
-
-        <section className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-          <Card title="Распределение эмоций">
-            <EmotionsDonut data={charts?.emotions ?? []} />
-          </Card>
-          <Card title="Инсайты">
-            <InsightCard metrics={metrics} />
-          </Card>
-        </section>
-
-        <section className="col-span-12">
-          <Card title="Вовлеченность">
+          <Card title="Вовлечённость">
             <EngagementBarChart data={charts?.mentions_by_day ?? []} />
           </Card>
-        </section>
-      </main>
+        </div>
+
+      </div>
 
       {analysis.loading && <Loader />}
     </div>

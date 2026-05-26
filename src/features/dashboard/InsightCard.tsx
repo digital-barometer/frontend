@@ -7,14 +7,12 @@ interface InsightCardProps {
 export function InsightCard({ metrics }: InsightCardProps) {
   if (!metrics) {
     return (
-      <p className="text-sm text-muted">
+      <p className="text-[13px] text-muted leading-relaxed">
         Запустите анализ, чтобы получить ключевые инсайты по теме.
       </p>
     );
   }
 
-  const sentimentScore =
-    metrics.sentiment_score == null ? null : Number(metrics.sentiment_score);
   const positivePct =
     metrics.total_texts > 0
       ? Math.round((metrics.positive_count / metrics.total_texts) * 100)
@@ -23,24 +21,24 @@ export function InsightCard({ metrics }: InsightCardProps) {
   return (
     <div className="flex flex-col gap-3">
       {metrics.summary_short && (
-        <div className="rounded-xl bg-surface-2 p-3 text-sm leading-relaxed text-text/90">
+        <div className="rounded-[14px] bg-surface-2 px-4 py-[14px] text-[13px] leading-[1.45] text-text">
           {positivePct != null && (
-            <span className="font-semibold text-positive mr-1">
-              Позитив {positivePct}%
+            <span className="font-bold text-positive mr-1">
+              Позитив ({positivePct}%)
             </span>
           )}
           {metrics.summary_short}
         </div>
       )}
       {metrics.summary_detailed && (
-        <p className="text-xs text-muted leading-relaxed">
+        <div className="rounded-[14px] bg-surface-2 px-4 py-[14px] text-[13px] leading-[1.45] text-text">
           {metrics.summary_detailed}
-        </p>
+        </div>
       )}
-      {sentimentScore != null && (
-        <p className="text-xs text-muted">
-          Sentiment score: <span className="text-text">{sentimentScore.toFixed(2)}</span>
-        </p>
+      {!metrics.summary_short && !metrics.summary_detailed && (
+        <div className="rounded-[14px] bg-surface-2 px-4 py-[14px] text-[13px] text-muted">
+          Инсайты не сформированы
+        </div>
       )}
     </div>
   );

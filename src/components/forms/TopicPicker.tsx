@@ -72,9 +72,12 @@ export function TopicPicker({
   return (
     <div className="flex flex-col gap-2" ref={wrapperRef}>
       <div className="relative">
-        <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
-          🔍
-        </div>
+        <span className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-muted inline-flex">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </span>
         <Input
           value={selectedTopic && !open ? selectedTopic.name : query}
           onChange={(e) => {
@@ -83,11 +86,11 @@ export function TopicPicker({
             if (selectedTopic) onSelectTopic(null);
           }}
           onFocus={() => setOpen(true)}
-          placeholder="Введите тему или выберите из списка..."
-          className="pl-9"
+          placeholder="Введите тему или ссылку на источник…"
+          className="pl-[42px]"
         />
         {open && (
-          <div className="absolute z-10 left-0 right-0 top-full mt-2 rounded-xl border border-border bg-surface shadow-card max-h-60 overflow-auto scroll-y">
+          <div className="absolute z-10 left-0 right-0 top-full mt-2 rounded-[12px] bg-field shadow-card max-h-60 overflow-auto scroll-y">
             {filtered.length === 0 && !showCreate && (
               <div className="px-3 py-3 text-sm text-muted">Нет совпадений</div>
             )}

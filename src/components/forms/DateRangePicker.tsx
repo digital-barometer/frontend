@@ -1,6 +1,5 @@
 import { clsx } from "clsx";
 import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
 import { addDays, format, parse } from "date-fns";
 
 interface DateRangePickerProps {
@@ -24,6 +23,15 @@ function tryParse(value: string): Date | null {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
+const CalendarIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="3" y="4" width="18" height="18" rx="2" />
+    <line x1="16" y1="2" x2="16" y2="6" />
+    <line x1="8" y1="2" x2="8" y2="6" />
+    <line x1="3" y1="10" x2="21" y2="10" />
+  </svg>
+);
+
 export function DateRangePicker({ from, to, onChange }: DateRangePickerProps) {
   function applyPreset(days: number) {
     const today = new Date();
@@ -41,45 +49,50 @@ export function DateRangePicker({ from, to, onChange }: DateRangePickerProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none">
-            📅
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-[10px]">
+        <div className="relative">
+          <span className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-muted inline-flex">
+            <CalendarIcon />
           </span>
           <Input
             type="date"
             value={from}
             max={to || undefined}
             onChange={(e) => onChange(e.target.value, to)}
-            className="pl-9"
+            className="pl-[42px]"
           />
         </div>
-        <span className="text-muted">—</span>
-        <div className="relative flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none">
-            📅
+        <span className="text-muted text-sm">—</span>
+        <div className="relative">
+          <span className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-muted inline-flex">
+            <CalendarIcon />
           </span>
           <Input
             type="date"
             value={to}
             min={from || undefined}
             onChange={(e) => onChange(from, e.target.value)}
-            className="pl-9"
+            className="pl-[42px]"
           />
         </div>
       </div>
-      <div className="flex gap-2">
+
+      <div className="flex flex-wrap gap-2">
         {PRESETS.map((p) => (
-          <Button
+          <button
             key={p.days}
             type="button"
-            variant="chip"
-            active={activePreset === p.days}
+            aria-pressed={activePreset === p.days}
             onClick={() => applyPreset(p.days)}
-            className={clsx("flex-1")}
+            className={clsx(
+              "flex-1 bg-chip text-text rounded-full px-4 py-[7px] text-[13px] border transition",
+              activePreset === p.days
+                ? "border-text dark:border-white light:border-brand dark:bg-chip bg-[#b9c3ff]"
+                : "border-transparent",
+            )}
           >
             {p.label}
-          </Button>
+          </button>
         ))}
       </div>
     </div>
