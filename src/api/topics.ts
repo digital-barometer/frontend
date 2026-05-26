@@ -1,8 +1,9 @@
-import { apiClient } from "./client";
+import { apiClient, ApiError } from "./client";
 import type { Topic, TopicCreateRequest, TopicUpdateRequest } from "./types";
 
 export async function listTopics(): Promise<Topic[]> {
   const { data } = await apiClient.get<Topic[]>("/topics");
+  if (!Array.isArray(data)) throw new ApiError("Неверный ответ API /topics — ожидался массив");
   return data;
 }
 
