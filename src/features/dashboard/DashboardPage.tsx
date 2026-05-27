@@ -10,6 +10,7 @@ import { BarometerGauge } from "@/components/charts/BarometerGauge";
 import { EmotionsDonut } from "@/components/charts/EmotionsDonut";
 import { MentionsLineChart } from "@/components/charts/MentionsLineChart";
 import { EngagementBarChart } from "@/components/charts/EngagementBarChart";
+import { TrendLineChart } from "@/components/charts/TrendLineChart";
 import { InsightCard } from "./InsightCard";
 import { MentionsList } from "./MentionsList";
 import { listSources, listTopics, type Source, type Topic } from "@/api";
@@ -66,6 +67,9 @@ export function DashboardPage() {
 
   const metrics = analysis.run?.metrics ?? null;
   const charts = analysis.charts;
+  const trendPoints = charts?.trend_points?.length
+    ? charts.trend_points
+    : (analysis.run?.trend_points ?? []);
 
   const gaugeValue = useMemo(() => {
     if (metrics?.barometer_value == null) return null;
@@ -186,6 +190,13 @@ export function DashboardPage() {
           </div>
 
         </div>
+
+        {/* Trend points row — shows when Google Trends data is present */}
+        {trendPoints.length > 0 && (
+          <Card title="Динамика поискового интереса (Google Trends)">
+            <TrendLineChart data={trendPoints} />
+          </Card>
+        )}
 
         {/* Bottom row: Mentions + Engagement side by side */}
         <div className="grid grid-cols-2 gap-5">
