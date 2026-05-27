@@ -109,6 +109,8 @@ export interface DailyMentionPoint {
   positive: number;
   neutral: number;
   negative: number;
+  mixed: number;
+  unknown: number;
 }
 
 export interface SentimentPoint {

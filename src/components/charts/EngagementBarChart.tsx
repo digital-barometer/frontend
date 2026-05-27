@@ -14,6 +14,8 @@ const SERIES = [
   { key: "positive",  label: "позитивные",  color: "#2eb872" },
   { key: "neutral",   label: "нейтральные", color: "#e89e3a" },
   { key: "negative",  label: "негативные",  color: "#7d57c8" },
+  { key: "mixed",     label: "смешанные",   color: "#4f8fba" },
+  { key: "unknown",   label: "не определено", color: "#8a94a6" },
 ] as const;
 
 export function EngagementBarChart({ data }: { data: DailyMentionPoint[] }) {
@@ -25,7 +27,7 @@ export function EngagementBarChart({ data }: { data: DailyMentionPoint[] }) {
     );
   }
 
-  const hasData = data.some((d) => d.positive > 0 || d.neutral > 0 || d.negative > 0);
+  const hasData = data.some((d) => SERIES.some((s) => d[s.key] > 0));
   if (!hasData) {
     return (
       <div className="h-56 flex items-center justify-center text-sm text-muted">
