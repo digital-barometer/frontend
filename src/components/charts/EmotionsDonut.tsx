@@ -1,7 +1,7 @@
 import type { EmotionPoint } from "@/api";
 
-const POSITIVE_EMOTIONS = new Set(["радость", "доверие"]);
-const NEGATIVE_EMOTIONS = new Set(["раздражение", "страх", "злость"]);
+const POSITIVE_EMOTIONS = new Set(["joy", "trust"]);
+const NEGATIVE_EMOTIONS = new Set(["irritation", "fear", "anger"]);
 
 // Цвета точно как в дизайне
 const POSITIVE_COLOR = "#2eb872";
