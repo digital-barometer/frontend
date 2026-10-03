@@ -1,97 +1,91 @@
 <div align="center">
 
-![Digital Barometer](docs/assets/logo.svg){width=96 height=96}
+<a href="https://gitlab.com/digital-barometer"><img src="https://gitlab.com/uploads/-/system/group/avatar/131474636/logo.png" width="72" alt="Digital Barometer"></a>
 
-# Digital Barometer · frontend
+# 📊 frontend
 
-**Веб-интерфейс сервиса «Цифровой барометр»: темы, источники и графики анализа.**
+### Dashboard: pick a topic, a period and sources — get the barometer, emotions, trends and mentions
 
-![React](https://img.shields.io/badge/React_18-20232A?style=flat-square&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
-![nginx](https://img.shields.io/badge/nginx-009639?style=flat-square&logo=nginx&logoColor=white)
+[![pipeline](https://gitlab.com/digital-barometer/frontend/badges/main/pipeline.svg)](https://gitlab.com/digital-barometer/frontend/-/pipelines)
+![React](https://img.shields.io/badge/React_18-20232A?logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-22b5bf)
+![nginx](https://img.shields.io/badge/nginx-009639?logo=nginx&logoColor=white)
+
+<sub>Part of <a href="https://gitlab.com/digital-barometer"><b>Digital Barometer</b></a> — media monitoring with an LLM sentiment barometer</sub>
 
 </div>
 
 ---
 
-Это один из трёх репозиториев системы — общий обзор в
-[профиле группы](https://gitlab.com/digital-barometer):
+## Role in the system
 
-| | Репозиторий | Назначение |
-| :---: | --- | --- |
-| 🧠 | [**backend**](https://gitlab.com/digital-barometer/backend) | REST API, сбор данных, LLM-анализ |
-| 📊 | **frontend** (этот) | Веб-интерфейс: темы, источники, графики |
-| 🛠️ | [**infra**](https://gitlab.com/digital-barometer/infra) | Traefik и PostgreSQL |
+A single-page dashboard on top of the [backend](https://gitlab.com/digital-barometer/backend). The user
+picks a topic, a date range and sources, starts an analysis and gets the results on one screen. The API is
+expected on the same domain under `/api`: the Vite dev server proxies it locally, and a reverse proxy does
+it in production.
 
-Графики строятся на Recharts. Интерфейс работает с API
-[backend](https://gitlab.com/digital-barometer/backend): `/topics`,
-`/sources`, `/analysis`, `/analysis/{id}/charts`, `/health`.
+```mermaid
+flowchart LR
+  U[browser] --> N((nginx<br>frontend))
+  U -->|/api/*| API[backend]
+```
 
-## Локальный запуск
+## Features
+
+- **Analysis setup** — topic picker with keyword editing and new topic creation, date range picker, multi-select of sources.
+- **Barometer** — 0–100 gauge with the sentiment label for the run.
+- **Charts** — emotion distribution, sentiment by day, mentions over time, Google Trends search interest.
+- **Insights and mentions** — LLM-generated insights and the list of collected mentions with links to the originals.
+- **Light / dark theme** toggle.
+
+## Contracts
+
+| Direction | Channel | Name |
+| --- | --- | --- |
+| ➡️ Out | HTTP | `GET /sources` · `GET` / `POST /topics` · `PATCH /topics/{id}` |
+| ➡️ Out | HTTP | `POST /analysis` · `GET /analysis/{id}` · `GET /analysis/{id}/charts` |
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `VITE_API_URL` | `/api` | API base URL baked into the build |
+| `VITE_API_PROXY_TARGET` | `http://localhost:8000` | where the Vite dev server proxies `/api` |
+| `WEB_PUBLIC_HOST` | — | Traefik host rule (compose) |
+| `WEB_PORT` | `8081` | published port (compose) |
+
+## Quick start
+
+**With Traefik** — needs `web_network` and Traefik from [infra](https://gitlab.com/digital-barometer/infra):
+
+```bash
+cp .env.example .env    # WEB_PUBLIC_HOST, VITE_API_URL
+DOCKER_IMAGE_NAME=barometer-web docker compose up -d --build   # http://localhost:8081, https://$WEB_PUBLIC_HOST
+```
+
+**Local development:**
 
 ```bash
 cp .env.example .env
 npm install
-npm run dev
+npm run dev          # http://localhost:5173, /api → VITE_API_PROXY_TARGET
+npm run typecheck
+npm run build
 ```
 
-Dev-сервер поднимается на `http://localhost:5173` и проксирует `/api` на
-`VITE_API_PROXY_TARGET`.
+## Structure
 
-### Переменные окружения
-
-| Переменная | Назначение | По умолчанию |
-| --- | --- | --- |
-| `VITE_API_URL` | Базовый URL API для клиента (в production — `/api` через reverse proxy) | `/api` |
-| `VITE_API_PROXY_TARGET` | Куда dev-сервер Vite проксирует запросы | `http://localhost:8000` |
-
-## Скрипты
-
-| Команда | Что делает |
-| --- | --- |
-| `npm run dev` | Dev-сервер |
-| `npm run typecheck` | Проверка типов (`tsc -b --noEmit`) |
-| `npm run lint` | ESLint |
-| `npm run build` | Сборка в `dist/` |
-| `npm run preview` | Просмотр production-сборки на `http://localhost:4173` |
-
-## Docker
-
-Многоэтапная сборка (node → nginx). API ожидается на том же домене под
-префиксом `/api` — его проксирует Traefik или другой reverse proxy.
-
-```bash
-docker build --build-arg VITE_API_URL=/api -t barometer-web .
-docker run --rm -p 8081:80 barometer-web
-# http://localhost:8081
+```text
+frontend/
+├── nginx.conf               # SPA fallback, /healthz, asset caching, security headers
+└── src/
+    ├── api/                 # axios client: topics, sources, analysis
+    ├── components/
+    │   ├── charts/          # BarometerGauge, EmotionsDonut, MentionsLineChart, TrendLineChart, EngagementBarChart
+    │   ├── forms/           # TopicPicker, DateRangePicker, SourcesMultiSelect
+    │   └── ui/              # Button, Card, Input, Checkbox, Tag
+    ├── features/dashboard/  # DashboardPage, insights, mentions list and stats
+    ├── hooks/               # useAnalysisRun, useTheme
+    └── utils/
 ```
-
-### Docker Compose
-
-`docker-compose.yml` запускает образ с лейблами Traefik (entrypoint
-`websecure`, cert resolver `barometer`). Нужна внешняя сеть `web_network`
-из [infra](https://gitlab.com/digital-barometer/infra) и переменные
-`DOCKER_IMAGE_NAME`, `WEB_PUBLIC_HOST`, опционально `VITE_API_URL`.
-
-## CI/CD
-
-Пайплайн в `.gitlab-ci.yml` устроен так же, как в backend:
-
-1. **`test_frontend`** — `npm ci`, `typecheck`, `build`.
-2. **`build_image`** — `docker build` и push в `$CI_REGISTRY_IMAGE`.
-   Только для веток `main` и `stage`.
-3. **`deploy_stage` / `deploy_prod`** — по SSH на целевой хост: `scp`
-   compose-файла и env, `docker compose pull web && docker compose up -d`.
-
-<details>
-<summary>Переменные CI</summary>
-
-| Окружение | Переменные |
-| --- | --- |
-| staging | `SSH_PRIVATE_KEY_STAGE`, `SSH_HOST_STAGE`, `SSH_PORT_STAGE`, `SSH_USER_STAGE`, `STAGE_ENV_FILE` |
-| production | `SSH_PRIVATE_KEY`, `SSH_HOST_PROD`, `SSH_PORT_PROD`, `SSH_USER_PROD`, `PROD_ENV_FILE` |
-| общие | `BASE_DEPLOY_PATH` |
-
-</details>
