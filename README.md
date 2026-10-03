@@ -1,42 +1,66 @@
-# Digital Barometer — frontend
+<div align="center">
 
-Web UI for the "Digital Barometer" service (media-mention analysis for a topic).
-Stack: **Vite + React 18 + TypeScript + Tailwind CSS + Recharts**.
+![Digital Barometer](docs/assets/logo.svg){width=96 height=96}
 
-Backend: `../backend` (FastAPI), API endpoints:
-`GET /topics`, `POST /topics`, `PATCH /topics/{id}`,
-`GET /sources`, `POST /analysis`, `GET /analysis/{id}`, `GET /analysis/{id}/charts`,
-`GET /health`.
+# Digital Barometer · frontend
 
-## Running locally
+**Веб-интерфейс сервиса «Цифровой барометр»: темы, источники и графики анализа.**
+
+![React](https://img.shields.io/badge/React_18-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![nginx](https://img.shields.io/badge/nginx-009639?style=flat-square&logo=nginx&logoColor=white)
+
+</div>
+
+---
+
+Это один из трёх репозиториев системы — общий обзор в
+[профиле группы](https://gitlab.com/digital-barometer):
+
+| | Репозиторий | Назначение |
+| :---: | --- | --- |
+| 🧠 | [**backend**](https://gitlab.com/digital-barometer/backend) | REST API, сбор данных, LLM-анализ |
+| 📊 | **frontend** (этот) | Веб-интерфейс: темы, источники, графики |
+| 🛠️ | [**infra**](https://gitlab.com/digital-barometer/infra) | Traefik и PostgreSQL |
+
+Графики строятся на Recharts. Интерфейс работает с API
+[backend](https://gitlab.com/digital-barometer/backend): `/topics`,
+`/sources`, `/analysis`, `/analysis/{id}/charts`, `/health`.
+
+## Локальный запуск
 
 ```bash
 cp .env.example .env
 npm install
-npm run dev        # http://localhost:5173, proxies /api → VITE_API_PROXY_TARGET
+npm run dev
 ```
 
-Environment variables:
+Dev-сервер поднимается на `http://localhost:5173` и проксирует `/api` на
+`VITE_API_PROXY_TARGET`.
 
-| Var | Purpose | Default |
+### Переменные окружения
+
+| Переменная | Назначение | По умолчанию |
 | --- | --- | --- |
-| `VITE_API_URL` | client base URL (in production — `/api`, served by the reverse proxy) | `/api` |
-| `VITE_API_PROXY_TARGET` | upstream for the Vite dev-server proxy | `http://localhost:8000` |
+| `VITE_API_URL` | Базовый URL API для клиента (в production — `/api` через reverse proxy) | `/api` |
+| `VITE_API_PROXY_TARGET` | Куда dev-сервер Vite проксирует запросы | `http://localhost:8000` |
 
-## Scripts
+## Скрипты
 
-```bash
-npm run dev         # dev server
-npm run typecheck   # tsc --noEmit
-npm run build       # build into dist/
-npm run preview     # preview the production build locally
-```
+| Команда | Что делает |
+| --- | --- |
+| `npm run dev` | Dev-сервер |
+| `npm run typecheck` | Проверка типов (`tsc -b --noEmit`) |
+| `npm run lint` | ESLint |
+| `npm run build` | Сборка в `dist/` |
+| `npm run preview` | Просмотр production-сборки на `http://localhost:4173` |
 
 ## Docker
 
-Multi-stage build (node → nginx). The API is expected on the same origin
-under the `/api` prefix (Traefik / another reverse proxy routes it to the
-backend).
+Многоэтапная сборка (node → nginx). API ожидается на том же домене под
+префиксом `/api` — его проксирует Traefik или другой reverse proxy.
 
 ```bash
 docker build --build-arg VITE_API_URL=/api -t barometer-web .
@@ -44,22 +68,30 @@ docker run --rm -p 8081:80 barometer-web
 # http://localhost:8081
 ```
 
-## Docker Compose
+### Docker Compose
 
-`docker-compose.yml` runs the image with Traefik labels (websecure, cert
-resolver `barometer`). Requires the external network `web_network` and the
-variables: `DOCKER_IMAGE_NAME`, `WEB_PUBLIC_HOST`, optionally `VITE_API_URL`.
+`docker-compose.yml` запускает образ с лейблами Traefik (entrypoint
+`websecure`, cert resolver `barometer`). Нужна внешняя сеть `web_network`
+из [infra](https://gitlab.com/digital-barometer/infra) и переменные
+`DOCKER_IMAGE_NAME`, `WEB_PUBLIC_HOST`, опционально `VITE_API_URL`.
 
-## CI/CD (GitLab)
+## CI/CD
 
-`.gitlab-ci.yml` follows the same convention as the backend:
-1. `test_frontend` — `npm ci` + `typecheck` + `build`.
-2. `build_image` — `docker build` + push to `$CI_REGISTRY_IMAGE`
-   (`main`, `stage` branches only).
-3. `deploy_stage` / `deploy_prod` — SSH into the target host, `scp` compose
-   file + env, `docker compose pull web && docker compose up -d`.
+Пайплайн в `.gitlab-ci.yml` устроен так же, как в backend:
 
-Required CI variables:
-`SSH_PRIVATE_KEY_STAGE`, `SSH_HOST_STAGE`, `SSH_PORT_STAGE`, `SSH_USER_STAGE`, `STAGE_ENV_FILE`,
-`SSH_PRIVATE_KEY`, `SSH_HOST_PROD`, `SSH_PORT_PROD`, `SSH_USER_PROD`, `PROD_ENV_FILE`,
-`BASE_DEPLOY_PATH`.
+1. **`test_frontend`** — `npm ci`, `typecheck`, `build`.
+2. **`build_image`** — `docker build` и push в `$CI_REGISTRY_IMAGE`.
+   Только для веток `main` и `stage`.
+3. **`deploy_stage` / `deploy_prod`** — по SSH на целевой хост: `scp`
+   compose-файла и env, `docker compose pull web && docker compose up -d`.
+
+<details>
+<summary>Переменные CI</summary>
+
+| Окружение | Переменные |
+| --- | --- |
+| staging | `SSH_PRIVATE_KEY_STAGE`, `SSH_HOST_STAGE`, `SSH_PORT_STAGE`, `SSH_USER_STAGE`, `STAGE_ENV_FILE` |
+| production | `SSH_PRIVATE_KEY`, `SSH_HOST_PROD`, `SSH_PORT_PROD`, `SSH_USER_PROD`, `PROD_ENV_FILE` |
+| общие | `BASE_DEPLOY_PATH` |
+
+</details>
